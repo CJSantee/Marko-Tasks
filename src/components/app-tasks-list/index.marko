@@ -1,0 +1,136 @@
+import { getTasks, createTask, deleteTask } from "../../services/tasks/api";
+
+class {
+	onInput(input) {
+		const { tasksData } = input;
+		let tasks = [];
+
+		if (tasksData) {
+			tasks = tasksData.tasks;
+		}
+
+		this.state = {
+			loading: false,
+			tasks: tasks,
+			newTaskInput: false,
+			newTask: {
+				title: "Title",
+				details: null,
+				complete: false
+			}
+		};
+	}
+
+	onMount() {
+		if (this.state.tasks.length === 0) {
+			this.loadTasks();
+		}
+	}
+
+	async loadTasks() {
+		const { state } = this;
+
+		state.loading = true;
+
+		try {
+			const tasksData = await getTasks();
+			state.tasks = state.tasks = tasksData;
+		} catch (err) {
+			console.log("Fetch failed:", err);
+		}
+
+		state.loading = false;
+	}
+	
+	handleAddTaskClick() {
+		this.state.newTaskInput = true;
+	}
+
+	async postTask() {
+		try {
+			const res = await createTask(this.state.newTask);
+			this.loadTasks();
+		} catch (err) {
+			console.log("Post failed:", err);
+		}
+	}
+
+	handleSubmitTaskClick() {
+		this.postTask();
+	}
+
+	async deleteTask(_id) {
+		try {
+			const res = await deleteTask(_id);
+			this.loadTasks();
+		} catch (err) {
+			console.log("Delete failed:", err);
+		}
+	}
+
+	handleDeleteTaskClick(event) {
+		const { data: { id } } = event;
+		this.deleteTask(id);
+	}
+
+	handleInputTitleChange(e) {
+		this.state.newTask.title = e.target.value;
+	}
+
+	handleInputDetailsChange(e) {
+		this.state.newTask.details = e.target.value;
+	}
+	
+}
+
+<div.app-tasks-list>
+	<div class="row justify-content-center m-2">
+		<div class="col-md-8">
+			<if(state.newTaskInput)>
+				<div class="task-group-item">
+					<div class="task-group-inputs" style={width: "100%"}>
+						<input type="text" class="task-group-item__input" placeholder="Title" value=(state.newTask.title) on-change("handleInputTitleChange")>
+						<input type="text" class="task-group-item__input" placeholder="Details" value=(state.newTask.details) on-change("handleInputDetailsChange")>
+					</div>
+					<div class="task-group-button mt-1">
+						<app-button label="Submit" size="small" onClick("handleSubmitTaskClick")/>
+					</div>
+				</div>
+			</if>
+			<else>
+				<div class="row justify-content-center m-2">
+					<div class="col-md-2">
+						<app-button label="Add Task" size="normal" variant="primary" onClick("handleAddTaskClick")/>
+					</div>
+				</div>
+			</else>
+			
+			<if(state.tasks.length)>	
+				<ul class="task-group">
+					<for|task, index| of=state.tasks>
+						<li class="task-group-item">
+							<div class="row">
+								<div class="col-sm-1 d-flex align-items-center" style={marginLeft: '0.5rem'}>
+									<input type="checkbox" checked=`${task.complete}` disabled>
+								</div>
+								<div class="col-sm-6">
+									<p class="task-group-item__title">
+										${task.title}
+									</p>
+									<p class="task-group-item__details">
+										${task.details}
+									</p>
+								</div>
+								<div class="col-sm-3 d-flex align-items-center justify-content-end">
+									<app-button label="delete" size="small" data={ id: task.id } onClick("handleDeleteTaskClick")/>
+								</div>
+							</div>
+
+						</li>
+					</for>
+				</ul>
+			</if>
+		</div>
+	</div>
+	
+</div>
