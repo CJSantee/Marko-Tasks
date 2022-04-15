@@ -138,8 +138,8 @@ class {
 							${task.details}
 						</p>
 					</div>
-					<div class="">
-						<app-button label="delete" size="small" data={ id: task.id } onClick("handleDeleteTaskClick")/>
+					<div class="task-item-ellipses">
+						<app-menu menuItems=(["Delete"])/>
 					</div>
 				</div>
 			</for>

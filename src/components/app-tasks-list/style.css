@@ -21,7 +21,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
 }
 
 .add-task-row__button {
@@ -35,8 +35,9 @@
 }
 
 .add-task-row__button p {
-    margin-left: 0.5rem;
+    margin-left: 1rem;
     color: #0000aa;
+    font-size: 14px;
 }
 
 .add-task-row__button:hover {
@@ -46,7 +47,7 @@
 .task-group-item {
     display: flex;
     flex-direction: row;
-    padding: 0.5rem;
+    padding: 1rem;
     margin: 0;
 }
 
@@ -55,12 +56,13 @@
 }
 
 .task-text__title {
-    font-weight: bold;
+    font-size: 14px;
     margin: 0;
 }
 
 .task-text__details {
     margin: 0;
+    font-size: 12px;
 }
 
 .task-group-inputs {
@@ -69,6 +71,20 @@
 
 .task-group-button {
     width: 100%;
+}
+
+.task-item-check {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.task-item-ellipses {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
 }
 
 input[type="text"] {

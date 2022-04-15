@@ -4,18 +4,25 @@
 
 .menu {
     position: absolute;
-    right: 0;
-    width: 200;
+    right: 1rem;
+    width: 250px;
     background-color: white;
-    padding: 0.5rem;
-    border: 1px solid lightgray;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .menu-item {
-    padding: 0;
     margin: 0;
+    padding: 0.5rem;
+}
+
+.menu-item:hover {
+    background-color: rgb(245, 245, 245);
 }
 
 .menu-item p {
     margin: 0;
+    font-size: 14px;
 }
