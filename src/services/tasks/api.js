@@ -16,7 +16,7 @@ async function createTask(data) {
 
 async function updateTask(data) {
     const res = await fetch(`/api/tasks/${data.id}`, {
-        method: "PATCH",
+        method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },

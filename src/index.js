@@ -17,4 +17,5 @@ export default Router()
     .get("/api/tasks", getTasks)
     .get("/api/tasks/:id", getTask)
     .patch("/api/tasks/:id", toggleTask)
+    .put("/api/tasks/:id", updateTask)
     .delete("/api/tasks/:id", deleteTask);

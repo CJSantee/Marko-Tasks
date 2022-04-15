@@ -39,7 +39,7 @@ const updateTask = (request, response) => {
     task.id = parseInt(request.params.id);
     pool.query(
         "SELECT * FROM updateTask($1, $2, $3, $4, $5)",
-        [task.title, task.details, task.deadline, task.complete, task.id],
+        [task.title, task.details, task.complete, task.deadline, task.id],
         (error, result) => {
             if (error) {
                 return response.status(404).send(error);

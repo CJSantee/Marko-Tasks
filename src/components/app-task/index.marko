@@ -1,10 +1,18 @@
-import { toggleTask, deleteTask } from "../../services/tasks/api";
+import { updateTask, toggleTask, deleteTask } from "../../services/tasks/api";
 
 class {
 	onInput(input) {
 		this.state = {
 			task: input.task,
 			editing: false
+		}
+	}
+
+	async updateTask() {
+		try {
+			await updateTask(this.state.task);
+		} catch (err) {
+			console.log("Update failed:", err);
 		}
 	}
 
@@ -38,18 +46,21 @@ class {
 	}
 
 	handleTitleChange(e) {
+		console.log("Title changed");
 		this.state.task.title = e.target.value;
+		this.updateTask();
 	}
 
 	handleDetailsChange(e) {
 		this.state.task.details = e.target.value;
+		this.updateTask();
 	}
 
 	handleEditingToggle() {
 		this.state.editing = !this.state.editing;
 	}
 
-	handleInputBlur() {
+	handleInputBlur(e) {
 		this.state.editing = false;
 	}
 
