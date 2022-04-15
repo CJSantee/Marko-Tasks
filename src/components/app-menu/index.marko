@@ -9,6 +9,14 @@ class {
 	handleToggleMenuClick() {
 		this.state.menuOpen = !this.state.menuOpen;
 	}
+
+	handleMenuItemClick(e) {
+		const menuItem = e.target.innerText;
+		this.emit("click", {
+			menuItem: menuItem,
+			task_id: this.input.task_id
+		})
+	}
 }
 
 <div>
@@ -22,7 +30,7 @@ class {
 	<if(state.menuOpen)>
 		<div class="menu">
 			<for|menuItem, index| of=state.menuItems>
-				<div class="menu-item">
+				<div class="menu-item" data=(menuItem) onClick("handleMenuItemClick")>
 					<p>${menuItem}</p>
 				</div>
 			</for>

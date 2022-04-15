@@ -1,0 +1,89 @@
+import { toggleTask, deleteTask } from "../../services/tasks/api";
+
+class {
+	onInput(input) {
+		this.state = {
+			task: input.task,
+			editing: false
+		}
+	}
+
+	async toggleTask(data) {
+		try {
+			const res = await toggleTask(data);
+		} catch (err) {
+			console.log("Patch failed:", err);
+		}
+	}
+
+	handleTaskCompleteToggle(event) {
+		const { checked, data: { id }} = event;
+		this.toggleTask({id: id, complete: checked});
+	}
+
+	async deleteTask(_id) {
+		try {
+			const res = await deleteTask(_id);
+			this.emit("task-deleted");
+		} catch (err) {
+			console.log("Delete failed:", err);
+		}
+	}
+
+	handleMenuItemClicked(event) {
+		const { menuItem, task_id } = event;
+		if (menuItem === "Delete") {
+			this.deleteTask(task_id);
+		}
+	}
+
+	handleTitleChange(e) {
+		this.state.task.title = e.target.value;
+	}
+
+	handleDetailsChange(e) {
+		this.state.task.details = e.target.value;
+	}
+
+	handleEditingToggle() {
+		this.state.editing = !this.state.editing;
+	}
+
+	handleInputBlur() {
+		this.state.editing = false;
+	}
+
+}
+
+<div class="task-group-item">
+	<div class="task-item-check">
+		<app-task-check checked=(state.task.complete) data={ id: state.task.id } onToggle("handleTaskCompleteToggle")/>
+	</div>
+	<if (state.editing || (!state.task.title && !state.task.details))>
+		<div class="task-group-inputs" >
+			<input type="text" class="task-title__input" placeholder="Title" value=(state.task.title) onChange("handleTitleChange") onBlur("handleInputBlur")>
+			<div class="task-details">
+				<svg width="20" height="20" viewBox="0 0 24 24">
+					<path d="M9 18h12v-2H9v2zM3 6v2h18V6H3zm6 7h12v-2H9v2z"></path>
+				</svg>
+				<input type="text" class="task-details__input" placeholder="Details" value=(state.task.details) onChange("handleDetailsChange") onBlur("handleInputBlur")>
+			</div>
+		</div>
+	</if>
+	<else>
+		<div class="task-text" onClick("handleEditingToggle")>
+			<span>
+			<p class="task-title__text">
+				${state.task.title}
+			</p>
+			<p class="task-details__text">
+				${state.task.details}
+			</p>
+			</span>
+			
+		</div>
+	</else>
+	<div class="task-item-ellipses">
+		<app-menu menuItems=(["Delete"]) task_id=(state.task.id) onClick("handleMenuItemClicked")/>
+	</div>
+</div>

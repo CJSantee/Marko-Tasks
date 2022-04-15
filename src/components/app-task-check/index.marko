@@ -22,11 +22,11 @@ class {
 		let defaultPrevented = false;
 
 		this.emit("toggle", {
-		checked: newChecked,
-		data: this.input.data,
-		preventDefault() {
-			defaultPrevented = true;
-		}
+			checked: newChecked,
+			data: this.input.data,
+			preventDefault() {
+				defaultPrevented = true;
+			}
 		});
 
 		if (!defaultPrevented) {
