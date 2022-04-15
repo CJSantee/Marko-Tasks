@@ -58,6 +58,18 @@ END
 $BODY$
 LANGUAGE 'plpgsql';
 
+-- Toggle Task --
+CREATE OR REPLACE FUNCTION toggleTask(_complete BOOLEAN, _id INT)
+RETURNS void
+AS $BODY$
+BEGIN
+    UPDATE tasks 
+    SET complete = _complete
+    WHERE id = _id;
+END
+$BODY$
+LANGUAGE 'plpgsql';
+
 -- Delete Task --
 CREATE OR REPLACE FUNCTION deleteTask(_id INT)
 RETURNS void

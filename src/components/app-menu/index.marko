@@ -1,0 +1,31 @@
+class {
+	onInput(input) {
+		this.state = {
+			menuItems: input.menuItems,
+			menuOpen: false
+		};
+	}
+
+	handleToggleMenuClick() {
+		this.state.menuOpen = !this.state.menuOpen;
+	}
+}
+
+<div>
+	<button onClick("handleToggleMenuClick") class="ellipses">
+		<span>
+			<svg width="20" height="20" viewBox="0 0 24 24">
+				<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+			</svg>
+		</span>
+	</button>
+	<if(state.menuOpen)>
+		<div class="menu">
+			<for|menuItem, index| of=state.menuItems>
+				<div class="menu-item">
+					<p>${menuItem}</p>
+				</div>
+			</for>
+		</div>
+	</if>	
+</div>

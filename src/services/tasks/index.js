@@ -44,7 +44,26 @@ const updateTask = (request, response) => {
             if (error) {
                 return response.status(404).send(error);
             }
-            response.status(200).send(`Task Item with ID: ${task.id} UPDATED`);
+            response
+                .status(200)
+                .send({ message: `Task Item with ID: ${task.id} UPDATED` });
+        }
+    );
+};
+
+const toggleTask = (request, response) => {
+    const { complete } = request.body;
+    const id = parseInt(request.params.id);
+    pool.query(
+        "SELECT * FROM toggleTask($1, $2)",
+        [complete, id],
+        (error, result) => {
+            if (error) {
+                return response.status(404).send(error);
+            }
+            response
+                .status(200)
+                .send({ message: `Task Item with ID: ${id} UPDATED` });
         }
     );
 };
@@ -55,8 +74,10 @@ const deleteTask = (request, response) => {
         if (error) {
             return response.status(404).send(error);
         }
-        response.status(204).send(`Task Item with ID: ${id} DELETED`);
+        response
+            .status(204)
+            .send({ message: `Task Item with ID: ${id} DELETED` });
     });
 };
 
-export { createTask, getTasks, getTask, updateTask, deleteTask };
+export { createTask, getTasks, getTask, updateTask, toggleTask, deleteTask };

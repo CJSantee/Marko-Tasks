@@ -1,4 +1,4 @@
-import { getTasks, createTask, deleteTask } from "../../services/tasks/api";
+import { getTasks, createTask, toggleTask, deleteTask } from "../../services/tasks/api";
 
 class {
 	onInput(input) {
@@ -14,7 +14,7 @@ class {
 			tasks: tasks,
 			newTaskInput: false,
 			newTask: {
-				title: "Title",
+				title: null,
 				details: null,
 				complete: false
 			}
@@ -27,6 +27,7 @@ class {
 		}
 	}
 
+	// Fetch Tasks from API
 	async loadTasks() {
 		const { state } = this;
 
@@ -41,7 +42,7 @@ class {
 
 		state.loading = false;
 	}
-	
+
 	handleAddTaskClick() {
 		this.state.newTaskInput = true;
 	}
@@ -73,6 +74,19 @@ class {
 		this.deleteTask(id);
 	}
 
+	async toggleTask(data) {
+		try {
+			const res = await toggleTask(data);
+		} catch (err) {
+			console.log("Patch failed:", err);
+		}
+	}
+
+	handleTaskCompleteToggle(event) {
+		const { checked, data: { id }} = event;
+		this.toggleTask({id: id, complete: checked});
+	}
+
 	handleInputTitleChange(e) {
 		this.state.newTask.title = e.target.value;
 	}
@@ -84,53 +98,51 @@ class {
 }
 
 <div.app-tasks-list>
-	<div class="row justify-content-center m-2">
-		<div class="col-md-8">
-			<if(state.newTaskInput)>
-				<div class="task-group-item">
-					<div class="task-group-inputs" style={width: "100%"}>
-						<input type="text" class="task-group-item__input" placeholder="Title" value=(state.newTask.title) on-change("handleInputTitleChange")>
-						<input type="text" class="task-group-item__input" placeholder="Details" value=(state.newTask.details) on-change("handleInputDetailsChange")>
-					</div>
-					<div class="task-group-button mt-1">
-						<app-button label="Submit" size="small" onClick("handleSubmitTaskClick")/>
-					</div>
-				</div>
-			</if>
-			<else>
-				<div class="row justify-content-center m-2">
-					<div class="col-md-2">
-						<app-button label="Add Task" size="normal" variant="primary" onClick("handleAddTaskClick")/>
-					</div>
-				</div>
-			</else>
-			
-			<if(state.tasks.length)>	
-				<ul class="task-group">
-					<for|task, index| of=state.tasks>
-						<li class="task-group-item">
-							<div class="row">
-								<div class="col-sm-1 d-flex align-items-center" style={marginLeft: '0.5rem'}>
-									<input type="checkbox" checked=`${task.complete}` disabled>
-								</div>
-								<div class="col-sm-6">
-									<p class="task-group-item__title">
-										${task.title}
-									</p>
-									<p class="task-group-item__details">
-										${task.details}
-									</p>
-								</div>
-								<div class="col-sm-3 d-flex align-items-center justify-content-end">
-									<app-button label="delete" size="small" data={ id: task.id } onClick("handleDeleteTaskClick")/>
-								</div>
-							</div>
-
-						</li>
-					</for>
-				</ul>
-			</if>
+	<if(state.newTaskInput)>
+		<div class="task-group-item">
+			<div class="task-group-inputs" style={width: "100%"}>
+				<input type="text" class="task-group-item__input" placeholder="Title" value=(state.newTask.title) on-change("handleInputTitleChange")>
+				<input type="text" class="task-group-item__input" placeholder="Details" value=(state.newTask.details) on-change("handleInputDetailsChange")>
+			</div>
+			<div class="task-group-button mt-1">
+				<app-button label="Submit" size="small" onClick("handleSubmitTaskClick")/>
+			</div>
 		</div>
-	</div>
+	</if>
+	<else>
+		<div class="add-task-row">
+			<button class="add-task-row__button" onClick("handleAddTaskClick")>
+				<span>
+					<svg width="20" height="20" viewBox="0 0 24 24">
+						<path d="M22 5.18 10.59 16.6l-4.24-4.24 1.41-1.41 2.83 2.83 10-10L22 5.18zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8c1.57 0 3.04.46 4.28 1.25l1.45-1.45C16.1 2.67 14.13 2 12 2 6.48 2 2 6.48 2 12s4.48 10 10 10c1.73 0 3.36-.44 4.78-1.22l-1.5-1.5c-1 .46-2.11.72-3.28.72zm7-5h-3v2h3v3h2v-3h3v-2h-3v-3h-2v3z" fill="#0000aa"></path>
+					</svg>
+				</span>
+				<p>Add a task</p>
+			</button>
+			<app-menu menuItems=(["My order", "Date", "Rename list"])/>
+		</div>
+	</else>
 	
+	<if(state.tasks.length)>	
+		<div class="task-group">
+			<for|task, index| of=state.tasks>
+				<div class="task-group-item">
+					<div class="task-item-check">
+						<app-task-check checked=(task.complete) data={ id: task.id } onToggle("handleTaskCompleteToggle")/>
+					</div>
+					<div class="task-text">
+						<p class="task-text__title">
+							${task.title}
+						</p>
+						<p class="task-text__details">
+							${task.details}
+						</p>
+					</div>
+					<div class="">
+						<app-button label="delete" size="small" data={ id: task.id } onClick("handleDeleteTaskClick")/>
+					</div>
+				</div>
+			</for>
+		</div>
+	</if>
 </div>
