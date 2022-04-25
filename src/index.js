@@ -12,7 +12,7 @@ import {
 } from "./services/tasks";
 
 export default Router()
-    .get("/tasks", tasksPage)
+    .get("/", tasksPage)
     .post("/api/tasks", createTask)
     .get("/api/tasks", getTasks)
     .get("/api/tasks/:id", getTask)

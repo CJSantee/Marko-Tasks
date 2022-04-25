@@ -1,0 +1,23 @@
+.completed-tasks {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+    padding: 0 1rem 0 1rem;
+    border-top: 1px solid rgb(235, 235, 235);
+}
+
+.completed-tasks__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.completed-tasks__header p {
+    font-size: 14px;
+    color: rgb(85, 85, 85);
+}
+
+.expand-button {
+    background-color: inherit;
+}

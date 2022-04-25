@@ -53,6 +53,10 @@
     border-radius: 25px;
 }
 
+.add-task-row__button {
+    color: #0000aa;
+}
+
 .add-task-row__button p {
     margin-left: 1rem;
     color: #0000aa;

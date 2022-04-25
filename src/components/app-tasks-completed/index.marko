@@ -1,0 +1,40 @@
+class {
+	onInput(input) {
+		const { completedTasks } = input;
+
+		this.state = {
+			completedTasks: completedTasks,
+			numCompleted: 208,
+			expanded: false
+		}
+	}
+
+	handleExpandCompletedToggle() {
+		this.state.expanded = !this.state.expanded;
+	}
+
+}
+
+<div class="completed-tasks">
+	<div class="completed-tasks__header">
+		<p>Completed (${state.numCompleted})</p>
+		<button onClick("handleExpandCompletedToggle") class="expand-button">
+			<span>
+				<svg width="25" height="25" viewBox="0 0 24 24">
+					<if(state.expanded)>
+						<path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" fill="#555555"></path>
+					</if>
+					<else>
+						<path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z" fill="#555555"></path>
+					</else>
+				</svg>
+			</span>
+		</button>
+		
+	</div>
+	<if(state.expanded)>
+		<div class="task-group">
+			<p>Test</p>
+		</div>
+	</if>
+</div>
